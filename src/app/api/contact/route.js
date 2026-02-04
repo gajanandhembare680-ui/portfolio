@@ -4,14 +4,27 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
     try {
-        await dbConnect();
-        const data = await req.json();
+        const body = await req.json();
 
-        const contact = await Contact.create(data);
+        // Mock success in development if no DB is set up
+        if (!process.env.MONGODB_URI) {
+            console.log('------- CONTACT FORM SUBMISSION (MOCK) -------');
+            console.log(body);
+            console.log('---------------------------------------------');
+
+            // Artificial delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            return NextResponse.json({ success: true, message: 'Message sent (Mock Mode)' }, { status: 201 });
+        }
+
+        await dbConnect();
+        const contact = await Contact.create(body);
 
         return NextResponse.json({ success: true, data: contact }, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+        console.error('Contact API Error:', error);
+        return NextResponse.json({ success: false, error: 'Failed to send message' }, { status: 500 });
     }
 }
 

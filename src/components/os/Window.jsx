@@ -53,39 +53,42 @@ export default function Window({ id, children }) {
             onPointerDown={() => focusApp(id)}
         >
             {/* Window Header */}
-            <div
-                className="h-10 bg-gray-100 dark:bg-gray-800 flex items-center justify-between px-4 select-none cursor-default touch-none shrink-0"
-                onPointerDown={(e) => {
-                    focusApp(id);
-                    if (!isMobile && !isMaximized) dragControls.start(e);
-                }}
-                onDoubleClick={() => !isMobile && toggleMaximize(id)}
-            >
-                <div className="flex gap-2 group">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); closeApp(id); }}
-                        className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
-                    >
-                        <X size={6} />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); minimizeApp(id); }}
-                        className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
-                    >
-                        <Minimize2 size={6} />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); toggleMaximize(id); }}
-                        className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
-                    >
-                        <Maximize2 size={6} />
-                    </button>
+            {/* Window Header - Only show on Desktop */}
+            {!isMobile && (
+                <div
+                    className="h-10 bg-gray-100 dark:bg-gray-800 flex items-center justify-between px-4 select-none cursor-default touch-none shrink-0"
+                    onPointerDown={(e) => {
+                        focusApp(id);
+                        if (!isMobile && !isMaximized) dragControls.start(e);
+                    }}
+                    onDoubleClick={() => !isMobile && toggleMaximize(id)}
+                >
+                    <div className="flex gap-2 group">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); closeApp(id); }}
+                            className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
+                        >
+                            <X size={6} />
+                        </button>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); minimizeApp(id); }}
+                            className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
+                        >
+                            <Minimize2 size={6} />
+                        </button>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); toggleMaximize(id); }}
+                            className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center text-[8px] text-transparent group-hover:text-black/50 transition-colors"
+                        >
+                            <Maximize2 size={6} />
+                        </button>
+                    </div>
+                    <div className="text-xs font-medium text-gray-500 uppercase tracking-widest pointer-events-none">
+                        {id}
+                    </div>
+                    <div className="w-10" />
                 </div>
-                <div className="text-xs font-medium text-gray-500 uppercase tracking-widest pointer-events-none">
-                    {id}
-                </div>
-                <div className="w-10" />
-            </div>
+            )}
 
             {/* Content */}
             <div className="flex-1 overflow-hidden relative">

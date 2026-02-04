@@ -16,8 +16,8 @@ export default function SettingsApp() {
     };
 
     return (
-        <div className="flex flex-col h-full bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-white">
-            <div className="p-6">
+        <div className="flex flex-col h-full bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-white overflow-hidden">
+            <div className="flex-1 overflow-y-auto p-6">
                 <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
                 {/* Wallpaper Section */}
@@ -60,6 +60,9 @@ export default function SettingsApp() {
                         </div>
                     </div>
                 </section>
+
+                {/* Spacer for mobile nav */}
+                <div className="h-12 md:h-0" />
             </div>
         </div>
     );
