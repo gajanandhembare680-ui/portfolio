@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ExternalLink, Github, ArrowLeft, Layers, Zap } from 'lucide-react';
+import { useOSStore } from '@/store/useOSStore'; // Import store
 
 const PROJECTS_DATA = [
     {
@@ -40,6 +41,19 @@ const PROJECTS_DATA = [
 
 export default function ProjectsApp() {
     const [selectedProject, setSelectedProject] = useState(null);
+    const { registerBackHandler, unregisterBackHandler } = useOSStore();
+
+    useEffect(() => {
+        if (selectedProject) {
+            registerBackHandler('projects', () => {
+                setSelectedProject(null);
+                return true; // Signal that the back action was handled
+            });
+        } else {
+            unregisterBackHandler('projects');
+        }
+        return () => unregisterBackHandler('projects');
+    }, [selectedProject, registerBackHandler, unregisterBackHandler]);
 
     return (
         <div className="flex flex-col h-full bg-gray-50 dark:bg-slate-900 text-slate-900 dark:text-white">

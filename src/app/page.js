@@ -15,6 +15,8 @@ import TaskSwitcher from '@/components/os/TaskSwitcher';
 import AppDrawer from '@/components/os/AppDrawer';
 import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
 
+import AndroidNavBar from '@/components/os/AndroidNavBar';
+
 export default function Home() {
   const { isLocked } = useOSStore();
   useKeyboardShortcuts();
@@ -36,6 +38,7 @@ export default function Home() {
               <WindowManager />
             </Desktop>
             <Dock />
+            <AndroidNavBar />
           </div>
         )}
       </AnimatePresence>

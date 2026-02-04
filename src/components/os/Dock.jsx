@@ -31,7 +31,7 @@ export default function Dock() {
                     animate={{ y: 0 }}
                     exit={{ y: 100 }}
                     transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                    className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+                    className={`fixed ${isMobile ? 'bottom-16' : 'bottom-4'} left-1/2 -translate-x-1/2 z-50`}
                 >
                     <div className="flex items-end gap-3 px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
                         {/* Regular Apps / Favorites */}

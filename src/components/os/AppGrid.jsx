@@ -6,7 +6,7 @@ export default function AppGrid() {
     const { openApp } = useOSStore();
 
     return (
-        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 p-6 pt-10">
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 p-6 pt-10 pb-32">
             {APPS.map((app, index) => (
                 <AppIcon
                     key={app.id}

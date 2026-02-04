@@ -32,7 +32,7 @@ export default function Window({ id, children }) {
                 y: (isMobile || isMaximized) ? 0 : winState.position?.y || 0,
                 // If Maximized: Force full width/height. If Mobile: Force fixed full. 
                 width: isMobile ? '100%' : (isMaximized ? '100%' : 800),
-                height: isMobile ? 'calc(100% - 2rem)' : (isMaximized ? 'calc(100% - 2rem)' : 600), // Match top-8 (2rem)
+                height: isMobile ? 'calc(100% - 5rem)' : (isMaximized ? 'calc(100% - 2rem)' : 600), // Match top-8 (2rem) + bottom-12 (3rem) for mobile
             }}
             exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
             transition={{ type: "spring", damping: 30, stiffness: 350 }}
@@ -46,7 +46,7 @@ export default function Window({ id, children }) {
             style={{ zIndex: winState.zIndex }}
             className={`absolute flex flex-col overflow-hidden bg-white dark:bg-slate-900 shadow-2xl border border-gray-200 dark:border-gray-700 pointer-events-auto
                 ${isMobile || isMaximized
-                    ? 'top-8 left-0 right-0 bottom-0 rounded-t-xl fixed !w-full border-0' // Fixed full screen minus status bar (top-8)
+                    ? 'top-8 left-0 right-0 bottom-12 rounded-t-xl fixed !w-full border-0' // Fixed full screen minus status bar (top-8) and nav bar (bottom-12)
                     : 'rounded-xl' // Default desktop window look
                 }
             `}

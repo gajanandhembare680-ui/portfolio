@@ -77,6 +77,22 @@ export const useOSStore = create((set, get) => ({
         activeApp: null
     })),
 
+    minimizeAll: () => set((state) => {
+        const newWindows = { ...state.windows };
+        Object.keys(newWindows).forEach(key => {
+            if (newWindows[key].isOpen) {
+                newWindows[key] = { ...newWindows[key], isMinimized: true }; // properly update the object
+            }
+        });
+        return {
+            windows: newWindows,
+            activeApp: null,
+            isAppDrawerOpen: false,
+            isTaskSwitcherOpen: false,
+            isCommandPaletteOpen: false
+        };
+    }),
+
     toggleMinimize: (appId) => {
         const state = get();
         const win = state.windows[appId];
@@ -122,6 +138,31 @@ export const useOSStore = create((set, get) => ({
             [appId]: { ...state.windows[appId], position }
         }
     })),
+
+    // Custom Back Handler Registry
+    backHandlers: {}, // { [appId]: callback }
+    registerBackHandler: (appId, handler) => set(state => ({
+        backHandlers: { ...state.backHandlers, [appId]: handler }
+    })),
+    unregisterBackHandler: (appId) => set(state => {
+        const newHandlers = { ...state.backHandlers };
+        delete newHandlers[appId];
+        return { backHandlers: newHandlers };
+    }),
+
+    closeAllApps: () => set((state) => {
+        const newWindows = { ...state.windows };
+        Object.keys(newWindows).forEach(key => {
+            newWindows[key] = { ...newWindows[key], isOpen: false, isMinimized: false };
+        });
+        return {
+            windows: newWindows,
+            activeApp: null,
+            isAppDrawerOpen: false,
+            isTaskSwitcherOpen: false,
+            isCommandPaletteOpen: false
+        };
+    }),
 
     toggleMaximize: (appId) => set((state) => {
         const win = state.windows[appId];
