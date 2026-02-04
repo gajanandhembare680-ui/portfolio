@@ -17,18 +17,7 @@ export const useOSStore = create((set, get) => ({
     isAppDrawerOpen: false,
     setAppDrawerOpen: (isOpen) => set({ isAppDrawerOpen: isOpen }),
 
-    // Music State
-    isMusicPlaying: false,
-    musicVolume: 0.5,
-    currentTrackIndex: 0,
-    setMusicPlaying: (isPlaying) => set({ isMusicPlaying: isPlaying }),
-    setMusicVolume: (volume) => set({ musicVolume: volume }),
-    nextTrack: (totalTracks) => set((state) => ({
-        currentTrackIndex: (state.currentTrackIndex + 1) % totalTracks
-    })),
-    prevTrack: (totalTracks) => set((state) => ({
-        currentTrackIndex: (state.currentTrackIndex - 1 + totalTracks) % totalTracks
-    })),
+
 
     // Window System State
     windows: {}, // { [appId]: { id, isOpen, isMinimized, isMaximized, zIndex, position: {x,y}, size: {w,h} } }

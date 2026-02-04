@@ -23,7 +23,8 @@ const APP_COMPONENTS = {
     settings: dynamic(() => import('@/components/apps/SettingsApp'), { loading: () => <AppLoader /> }),
     changelog: dynamic(() => import('@/components/apps/ChangelogApp'), { loading: () => <AppLoader /> }),
     terminal: dynamic(() => import('@/components/apps/TerminalApp'), { loading: () => <AppLoader /> }),
-    music: dynamic(() => import('@/components/apps/MusicApp'), { loading: () => <AppLoader /> }),
+
+    guestbook: dynamic(() => import('@/components/apps/GuestbookApp'), { loading: () => <AppLoader /> }),
 };
 
 export default function WindowManager() {

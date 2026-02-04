@@ -6,7 +6,7 @@ import {
     FileText,
     Settings,
     Mail,
-    Music,
+    Book,
     History,
     Terminal
 } from 'lucide-react';
@@ -54,11 +54,12 @@ export const APPS = [
         icon: Terminal,
         color: 'bg-slate-900',
     },
+
     {
-        id: 'music',
-        name: 'Music',
-        icon: Music,
-        color: 'bg-rose-500',
+        id: 'guestbook',
+        name: 'Guestbook',
+        icon: Book,
+        color: 'bg-indigo-500',
     },
     {
         id: 'changelog',
