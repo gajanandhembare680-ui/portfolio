@@ -1,27 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { APPS } from '@/lib/constants';
+import { APPS, DESKTOP_APPS } from '@/lib/constants';
 import { useOSStore } from '@/store/useOSStore';
 import useWindowSize from '@/hooks/useWindowSize';
-import { Grip } from 'lucide-react';
 
 export default function Dock() {
-    const { toggleMinimize, windows, activeApp, setAppDrawerOpen } = useOSStore();
+    const { toggleMinimize, windows, activeApp } = useOSStore();
     const { width } = useWindowSize();
     const isMobile = width < 768;
 
-    // Logic to hide dock:
-    const shouldHideDock = Object.values(windows).some(w => {
-        if (!w.isOpen || w.isMinimized) return false;
-        return isMobile || w.isMaximized;
-    });
+    // Always hide dock now (we have pinned icons on desktop, apps on mobile home)
+    // Dock is no longer needed in the new design
+    const shouldHideDock = true;
 
-    // Mobile Dock items: Show max 3 "Favorites" + App Drawer Button
-    // Let's pick Contact, Projects, Resume as favorites
-    const mobileFavorites = ['contact', 'projects']; // just 2 for space? or 3?
-
-    const displayedApps = isMobile
-        ? APPS.filter(app => mobileFavorites.includes(app.id))
-        : APPS;
+    // Desktop only: show all apps
+    const displayedApps = APPS;
 
     return (
         <AnimatePresence>
@@ -31,10 +23,10 @@ export default function Dock() {
                     animate={{ y: 0 }}
                     exit={{ y: 100 }}
                     transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                    className={`fixed ${isMobile ? 'bottom-16' : 'bottom-4'} left-1/2 -translate-x-1/2 z-50`}
+                    className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
                 >
                     <div className="flex items-end gap-3 px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl">
-                        {/* Regular Apps / Favorites */}
+                        {/* Regular Apps */}
                         {displayedApps.map((app) => {
                             const isOpen = windows[app.id]?.isOpen;
                             const isActive = activeApp === app.id;
@@ -51,20 +43,6 @@ export default function Dock() {
                                 />
                             );
                         })}
-
-                        {/* App Drawer Button (Mobile Only) */}
-                        {isMobile && (
-                            <motion.button
-                                whileHover={{ scale: 1.2, y: -10 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => setAppDrawerOpen(true)}
-                                className="relative group flex flex-col items-center gap-1"
-                            >
-                                <div className="w-12 h-12 bg-white/10 dark:bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white shadow-lg border border-white/10">
-                                    <Grip size={24} />
-                                </div>
-                            </motion.button>
-                        )}
                     </div>
                 </motion.div>
             )}

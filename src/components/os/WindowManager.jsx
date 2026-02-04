@@ -15,6 +15,7 @@ const AppLoader = () => (
 
 // Map app IDs to components using Lazy Loading
 const APP_COMPONENTS = {
+    about: dynamic(() => import('@/components/apps/AboutApp'), { loading: () => <AppLoader /> }),
     skills: dynamic(() => import('@/components/apps/SkillsApp'), { loading: () => <AppLoader /> }),
     projects: dynamic(() => import('@/components/apps/ProjectsApp'), { loading: () => <AppLoader /> }),
     playground: dynamic(() => import('@/components/apps/PlaygroundApp'), { loading: () => <AppLoader /> }),
@@ -23,7 +24,6 @@ const APP_COMPONENTS = {
     settings: dynamic(() => import('@/components/apps/SettingsApp'), { loading: () => <AppLoader /> }),
     changelog: dynamic(() => import('@/components/apps/ChangelogApp'), { loading: () => <AppLoader /> }),
     terminal: dynamic(() => import('@/components/apps/TerminalApp'), { loading: () => <AppLoader /> }),
-
     guestbook: dynamic(() => import('@/components/apps/GuestbookApp'), { loading: () => <AppLoader /> }),
 };
 
