@@ -1,93 +1,61 @@
+import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useOSStore } from '@/store/useOSStore';
-import { AnimatePresence, motion } from 'framer-motion';
-import { X, Minus, Maximize2 } from 'lucide-react';
-import SkillsApp from '@/components/apps/SkillsApp';
-import ProjectsApp from '@/components/apps/ProjectsApp';
-import ResumeApp from '@/components/apps/ResumeApp';
-import PlaygroundApp from '@/components/apps/PlaygroundApp';
-import ContactApp from '@/components/apps/ContactApp';
-import SettingsApp from '@/components/apps/SettingsApp';
+import { AnimatePresence } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+import Window from './Window';
 
-// Map app IDs to components
+// Loading Placeholder
+const AppLoader = () => (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-slate-900/50">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-500 mb-2" />
+        <span className="text-xs text-gray-500 font-medium">Loading App...</span>
+    </div>
+);
+
+// Map app IDs to components using Lazy Loading
 const APP_COMPONENTS = {
-    skills: SkillsApp,
-    projects: ProjectsApp,
-    playground: PlaygroundApp,
-    resume: ResumeApp,
-    contact: ContactApp,
-    settings: SettingsApp,
+    skills: dynamic(() => import('@/components/apps/SkillsApp'), { loading: () => <AppLoader /> }),
+    projects: dynamic(() => import('@/components/apps/ProjectsApp'), { loading: () => <AppLoader /> }),
+    playground: dynamic(() => import('@/components/apps/PlaygroundApp'), { loading: () => <AppLoader /> }),
+    resume: dynamic(() => import('@/components/apps/ResumeApp'), { loading: () => <AppLoader /> }),
+    contact: dynamic(() => import('@/components/apps/ContactApp'), { loading: () => <AppLoader /> }),
+    settings: dynamic(() => import('@/components/apps/SettingsApp'), { loading: () => <AppLoader /> }),
+    changelog: dynamic(() => import('@/components/apps/ChangelogApp'), { loading: () => <AppLoader /> }),
 };
 
-function PlaceholderApp({ name }) {
-    return (
-        <div className="flex items-center justify-center h-full text-2xl font-bold opacity-50">
-            {name} App Coming Soon
-        </div>
-    );
-}
-
 export default function WindowManager() {
-    const { openApps, activeApp, focusApp, closeApp, minimizeApp } = useOSStore();
+    // We now iterate over the windows object
+    const { windows } = useOSStore();
+
+    // Lock body scroll if any window is open and not minimized (Mobile mostly, but good practice)
+    // Actually for desktop "windowed" mode we might NOT want to lock body scroll if the background interacts?
+    // But per requirements: "Disable body scroll when any app is open" to solve scroll conflicts.
+    const isAnyWindowOpen = Object.values(windows).some(w => w.isOpen && !w.isMinimized);
+
+    useEffect(() => {
+        if (isAnyWindowOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [isAnyWindowOpen]);
 
     return (
         <div className="absolute inset-0 pointer-events-none z-40 overflow-hidden">
             <AnimatePresence>
-                {openApps.map((appId) => {
-                    const Component = APP_COMPONENTS[appId];
-                    if (!Component) return null;
-
-                    const isActive = activeApp === appId;
+                {Object.values(windows).map((windowState) => {
+                    const Component = APP_COMPONENTS[windowState.id];
+                    if (!Component || !windowState.isOpen || windowState.isMinimized) return null;
 
                     return (
-                        <AppWindow
-                            key={appId}
-                            id={appId}
-                            isActive={isActive}
-                            onFocus={() => focusApp(appId)}
-                            onClose={() => closeApp(appId)}
-                            onMinimize={() => minimizeApp(appId)}
-                        >
+                        <Window key={windowState.id} id={windowState.id}>
                             <Component />
-                        </AppWindow>
+                        </Window>
                     );
                 })}
             </AnimatePresence>
         </div>
-    );
-}
-
-function AppWindow({ id, isActive, children, onFocus, onClose, onMinimize }) {
-    return (
-        <motion.div
-            layoutId={`window-${id}`}
-            initial={{ scale: 0.8, opacity: 0, y: 100 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.8, opacity: 0, y: 100 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className={`absolute inset-4 md:inset-10 pointer-events-auto flex flex-col overflow-hidden rounded-xl shadow-2xl border border-white/20 bg-white dark:bg-slate-900 ${isActive ? 'z-50 ring-2 ring-blue-500/50' : 'z-40 opacity-90'
-                }`}
-            onClick={onFocus}
-        >
-            {/* Window Title Bar */}
-            <div
-                className="h-10 bg-gray-100 dark:bg-gray-800 flex items-center justify-between px-4 select-none"
-                onDoubleClick={onMinimize} // Simple maximize/minimize logic placeholder
-            >
-                <div className="flex gap-2">
-                    <button onClick={onClose} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-600" />
-                    <button onClick={onMinimize} className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-600" />
-                    <button className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-600" />
-                </div>
-                <div className="text-xs font-medium text-gray-500 uppercase tracking-widest">
-                    {id}
-                </div>
-                <div className="w-10" />
-            </div>
-
-            {/* App Content */}
-            <div className="flex-1 overflow-hidden relative">
-                {children}
-            </div>
-        </motion.div>
     );
 }

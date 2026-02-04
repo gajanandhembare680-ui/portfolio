@@ -5,7 +5,8 @@ import {
     User,
     FileText,
     Settings,
-    Mail
+    Mail,
+    History
 } from 'lucide-react';
 
 export const APPS = [
@@ -44,5 +45,11 @@ export const APPS = [
         name: 'Settings',
         icon: Settings,
         color: 'bg-gray-500',
+    },
+    {
+        id: 'changelog',
+        name: 'System Updates',
+        icon: History,
+        color: 'bg-slate-700',
     },
 ];

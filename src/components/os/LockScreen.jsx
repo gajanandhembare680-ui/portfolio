@@ -27,10 +27,10 @@ export default function LockScreen() {
         >
             <div className="flex flex-col items-center mt-20">
                 <Lock size={24} className="mb-4 text-white/50" />
-                <h1 className="text-8xl font-thin tracking-tighter">
+                <h1 className="text-8xl font-thin tracking-tighter" suppressHydrationWarning>
                     {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                 </h1>
-                <p className="text-xl font-medium mt-2 text-white/80">
+                <p className="text-xl font-medium mt-2 text-white/80" suppressHydrationWarning>
                     {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
                 </p>
             </div>

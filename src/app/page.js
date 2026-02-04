@@ -9,11 +9,22 @@ import WindowManager from '@/components/os/WindowManager';
 import LockScreen from '@/components/os/LockScreen';
 import AppGrid from '@/components/os/AppGrid';
 
+import NotificationContainer from '@/components/ui/NotificationContainer';
+import CommandPalette from '@/components/os/CommandPalette';
+import TaskSwitcher from '@/components/os/TaskSwitcher';
+import AppDrawer from '@/components/os/AppDrawer';
+import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
+
 export default function Home() {
   const { isLocked } = useOSStore();
+  useKeyboardShortcuts();
 
   return (
     <main className="h-screen w-screen overflow-hidden font-sans select-none">
+      <NotificationContainer />
+      <CommandPalette />
+      <TaskSwitcher />
+      <AppDrawer />
       <AnimatePresence mode="wait">
         {isLocked ? (
           <LockScreen key="lock-screen" />
