@@ -22,6 +22,8 @@ const APP_COMPONENTS = {
     contact: dynamic(() => import('@/components/apps/ContactApp'), { loading: () => <AppLoader /> }),
     settings: dynamic(() => import('@/components/apps/SettingsApp'), { loading: () => <AppLoader /> }),
     changelog: dynamic(() => import('@/components/apps/ChangelogApp'), { loading: () => <AppLoader /> }),
+    terminal: dynamic(() => import('@/components/apps/TerminalApp'), { loading: () => <AppLoader /> }),
+    music: dynamic(() => import('@/components/apps/MusicApp'), { loading: () => <AppLoader /> }),
 };
 
 export default function WindowManager() {

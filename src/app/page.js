@@ -16,6 +16,7 @@ import AppDrawer from '@/components/os/AppDrawer';
 import useKeyboardShortcuts from '@/hooks/useKeyboardShortcuts';
 
 import AndroidNavBar from '@/components/os/AndroidNavBar';
+import GlobalAudio from '@/components/os/GlobalAudio';
 
 export default function Home() {
   const { isLocked } = useOSStore();
@@ -39,6 +40,7 @@ export default function Home() {
             </Desktop>
             <Dock />
             <AndroidNavBar />
+            <GlobalAudio />
           </div>
         )}
       </AnimatePresence>
